@@ -1,4 +1,19 @@
 <?
+/*
+1.Подключение настроек БД
+2.HTML-шаблон
+3.Хедер с информацией о пользователе
+4.Навигационное меню
+5.Обработка step и idcategory
+6.Создание корзины
+7.Добавление товара и переход к следующей категории
+8.Проверка окончания конфигурации
+9.Форма с товарами и фильтрацией
+10.Таблица с товарами
+11.Кнопки управления
+12.Футер
+13.Cкрипты
+*/
 require "option.php";//файл с параметрами подключения к БД
 ?>
 <!DOCTYPE html>
@@ -243,9 +258,8 @@ $s=$s." LIKE UPPER('%$value1"."%')  ";
 else
 $s=$s."=UPPER(merch) ";
 
-if ($idcategory>1)//ограничение по разъёмам
+if ($idcategory>1 && isset($idsale) && $idsale > 0)//ограничение по разъёмам
 $s=$s." and idmerch IN (SELECT idmerch from merchconnector where idconnector in (SELECT idconnector FROM merchconnector, merch, detail WHERE merchconnector.idmerch= merch.idmerch and merch.idmerch=detail.idmerch and idsale=$idsale))";
-
 if ($sort==1)/*есть ли сортировка данных*/
 {
 $fieldsort = $_POST['sortname'];//первое поле
@@ -304,18 +318,21 @@ $s=$s." order by avgmark DESC";
 				echo "<tr>";
 
 			
-	if (($i==0)||($f["idmerch"]==$idmerch))
-    echo "<td><input type=radio checked=checked name=ArrMerch[] value=".$f["idmerch"]."> </td>";
-	else
-    echo "<td><input type=radio name=ArrMerch[] value=".$f["idmerch"]."> </td>";				
-				echo "
-				<td> $f[merch]</td>
-				<td> $f[avgmark]</td>				
-				<td> $f[price]</td>
-				<td> $f[annotation]</td>	
-				<td> <a href='upload/".$f [file]."'> Фото</a> &nbsp;</td>					
-				";								
-				echo "</tr>";
+	echo "<tr>";
+
+if (($i==0)||($f['idmerch']==$idmerch))
+    echo "<td><input type=radio checked=checked name=ArrMerch[] value=".$f['idmerch']."> </td>";
+else
+    echo "<td><input type=radio name=ArrMerch[] value=".$f['idmerch']."> </td>";				
+
+echo "
+    <td> " . $f['merch'] . "</td>
+    <td> " . $f['avgmark'] . "</td>				
+    <td> " . $f['price'] . "</td>
+    <td> " . $f['annotation'] . "</td>	
+    <td> <a href='upload/" . $f['file'] . "'> Фото</a> &nbsp;</td>					
+";
+echo "</tr>";
 			  }		 
 		?>
       

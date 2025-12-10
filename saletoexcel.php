@@ -1,4 +1,13 @@
-<?	header('Content-Description: File Transfer');
+<?
+/*
+1.Установка заголовков для экспорта в Excel
+2.Подключение настроек БД
+3.Получение параметров фильтрации и сортировки
+4.Формирование SQL-запроса с фильтрацией
+5.Выполнение SQL-запроса
+6.Создание таблицы Excel с данными о продажах
+*/
+	header('Content-Description: File Transfer');
     header('Content-Type: application/octet-stream');
     header('Content-Disposition: attachment; filename=' . 'Продажи и заказы магазина.xls');
     header('Content-Transfer-Encoding: binary');

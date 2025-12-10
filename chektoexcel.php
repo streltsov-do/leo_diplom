@@ -1,4 +1,15 @@
 <?	
+/*
+1.Установка HTTP-заголовков для скачивания Excel файла
+2.Подключение к БД
+3.HTML-структура с указанием кодировки
+4.Получение ID заказа из POST
+5.Запрос данных о заказе из БД
+6.Вывод информации о продаже: дата и покупатель
+7.Создание таблицы с товарами в заказе
+8.Расчет общей суммы заказа
+9.Вывод общей суммы
+*/
 	header('Content-Description: File Transfer');
     header('Content-Type: application/octet-stream');
     header('Content-Disposition: attachment; filename=' . 'Счет.xls');

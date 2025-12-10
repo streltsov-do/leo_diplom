@@ -1,4 +1,16 @@
 <?
+/*
+1.Подключение настроек БД
+2.HTML-шаблон
+3.Хедер с пользовательской информацией
+4.Навигационное меню админки
+5.Получение параметров фильтрации и сортировки
+6.Формирование SQL-запроса с фильтрацией
+7.Элементы сортировки и фильтрации товаров
+8.Кнопки управления: Добавить, Удалить, Разъёмы
+9.Таблица списка товаров
+10.Футер и скрипты
+*/
 require "option.php";//файл с параметрами подключения к БД
 ?>
 <!DOCTYPE html>
@@ -232,10 +244,10 @@ $s=$s." order by $fieldsort";
 	else
     echo "<td><input type=radio name=ArrMerch[] value=".$f["idmerch"]."> </td>";				
 				echo "
-				<td> $f[merch]</td>
-				<td> $f[category]</td>				
-				<td> $f[price]</td>	
-				<td> <a href='upload/".$f [file]."'> $f[file]</a> &nbsp;</td>					
+				<td> " . $f['merch'] . "</td>
+				<td> " . $f['category'] . "</td>				
+				<td> " . $f['price'] . "</td>	
+				<td> <a href='upload/" . $f['file'] . "'> " . $f['file'] . "</a> &nbsp;</td>			
 				";								
 				echo "</tr>";
 			  }		 
