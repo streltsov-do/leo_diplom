@@ -31,7 +31,7 @@ $step=$_REQUEST["step"];
 if ($step==2)
 {
 $idmerch=$_GET["idmerch"];
-$r=mysqli_query($dbcnx,"select * FROM sale  WHERE iduser=$iduser and kind='Корзина'");
+$r=mysqli_query($dbcnx,"select * FROM sale  WHERE iduser=$iduser and kind='Корзина'") or die("Ошибка выборки sale: ".mysqli_error($dbcnx));
 
 
 	if (mysqli_num_rows($r)==0)//завести корзину
@@ -39,11 +39,13 @@ $r=mysqli_query($dbcnx,"select * FROM sale  WHERE iduser=$iduser and kind='Ко�
 
 	//забираем текущую дату
 	date_default_timezone_set("Europe/Moscow");
-	$Now=date("Y")."-".date("m")."-".date("d")." ".date("H").":".date("i").":".date("s");    
-	mysqli_query($dbcnx,"insert into sale (iduser, kind, datesale) values ($iduser, 'Корзина', '$Now')");
+	$Now=date("Y")."-".date("m")."-".date("d")." ".date("H").":".date("i").":".date("s");
+	// var_dump($Now); // TODO: remove after debugging
+
+	mysqli_query($dbcnx,"insert into sale (iduser, kind, datesale) values ($iduser, 'Корзина', '$Now')") or die("Ошибка вставки sale: ".mysqli_error($dbcnx));
 
 	$idsale=mysqli_insert_id($dbcnx);
-	mysqli_query($dbcnx,"insert into detail (idsale, idmerch, countmerch) values ($idsale, $idmerch, 1)");		
+	mysqli_query($dbcnx,"insert into detail (idsale, idmerch, countmerch) values ($idsale, $idmerch, 1)") or die("Ошибка вставки detail (новая корзина): ".mysqli_error($dbcnx));		
 
 	}
 
@@ -51,11 +53,19 @@ $r=mysqli_query($dbcnx,"select * FROM sale  WHERE iduser=$iduser and kind='Ко�
 	{
 	$f=mysqli_fetch_array($r);//считывание текующей записи	
 	$idsale=$f["idsale"];
-	$r=mysqli_query($dbcnx,"select * FROM detail  WHERE idsale=$idsale and idmerch=$idmerch");
+	$r=mysqli_query($dbcnx,"select * FROM detail  WHERE idsale=$idsale and idmerch=$idmerch") or die("Ошибка выборки detail: ".mysqli_error($dbcnx));
 		if (mysqli_num_rows($r)==0)//не наименования
-		mysqli_query($dbcnx,"insert into detail (idsale, idmerch, countmerch) values ($idsale, $idmerch, 1)");		
+		{
+		mysqli_query($dbcnx,"insert into detail (idsale, idmerch, countmerch) values ($idsale, $idmerch, 1)") or die("Ошибка вставки detail: ".mysqli_error($dbcnx));		
+		}
+		else
+		{
+		mysqli_query($dbcnx,"update detail set countmerch=countmerch+1 WHERE idsale=$idsale and idmerch=$idmerch") or die("Ошибка обновления detail: ".mysqli_error($dbcnx));		
+		}
+
 	}
 	
+	// var_dump($step, $idmerch, $idsale, $Now); // TODO: remove after debugging
 }
 
 
